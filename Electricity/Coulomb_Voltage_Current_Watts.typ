@@ -22,7 +22,7 @@
 )
 
 #maketitle(
-  title: "Titre",
+  title: "Understanding electricity through analogies",
   authors: ("Tarik Hireche : 202 301 89" ,),
   date: datetime.today().display("[day]. [month repr:long] [year]"),
 )
@@ -57,7 +57,7 @@ It's like renaming $1 "GB/second"$ to another invented word like micmac, so we'd
 
 == What about resistance? How does that relate to computer science?
 
-It would be analogous to latency or throttling. Basically anything that slows down the transfer of Coulombs per second (Bits per seconds in CS), so Amps, it's the concept of opposition to flow:
+It would be analogous to latency or throttling. Basically anything that slows down the transfer of Coulombs per second (Bits per seconds in CS, basically the bitrate), so Amps, it's the concept of opposition to flow:
 
 When latency and throttling are the things that slow down our bandwidth/bitrate, A thin cable, a resistance will get you a lower current (fewer electrons flowing per second at the lowest level of abstraction).
 
@@ -75,7 +75,21 @@ It is analagous to clock speed (Hz) in a CPU, this is the "pressure" or "push". 
 
 Clock speed (Frequency): Increases the *number of cycles per seconds*, the *pulses* are more *frequent*.
 
-A higher frequency means that our clock *pulses* at higher rate per second, however, since a *clock pulse is a cycle* then a higher amount of cycles per second means we can execute more instructions per seconds, now how many instructions per seconds? 
+A higher frequency means that our clock *pulses* at a higher rate per second, however, since a *clock pulse is a cycle* then a higher amount of cycles per second means we can execute more instructions per seconds, now how many instructions per seconds?
+
+Let's pick a quick example, let's say that our ADD operation takes 5 clock cycles to get executed (very unrealistic, but juste for the sake of the example):
+
+Now let's say that we have a CPU that functions at a clock speed of 5GHz:
+
+- That means that our clock completes a full cycle (Rising edge + Falling edge then rising edge again) *5 billion times* every single second. 
+- Therefore we have, 5 billion cycles per second, now if our add instruction takes 5 cycles, how much time would our CPU take to exectute our ADD instruction?
+
+$ (5 000 000 000 "cycles")/ (1 "second") = (5 "cycles") / (X "second(s)") $
+$ X "second(s)" = (5 "cycles") / (5 000 000 000 times 1 "second(s)") $
+$ X = 1000 times 10^(-12) "seconds" $
+$ X = 0,0000000001 "seconds" $
+
+We can imagine that if we had a higher clock speed, the result would be even smaller, so we can execute more instructions as the clock speed gets higher.
 
 This is relative to the *architecture* of the cpu. In some architectures, an instruction can take 1 cycle, or 2, or 4... it is really relative to the architecture.
 
@@ -111,7 +125,7 @@ A clock cycle, is a pulse (Rising edge), and this pulse is measure in Hz (Pulse 
 
 - In physics: Alternating Current Voltage (AC voltage), like from a wall socket, isn't a steady push -> it pushes in waves (measured in Hz), it pushes Amps at 60 hz for example, so 60 Coulombs every second are pushed through the cable. So we base ourselves on the frequency of voltage to know how much current can flow through.
 
-- In CS: The clock speed is also not steady (Rising vs falling edge), it's also a pulse. If we say that our CPU has a clock speed of *GHz*, then our clock pulses 3 billion times a second. *A pulse IS a Cycle*, that means we have *3 billion cycles per second*, so we can use those to executre more instructions!
+- In CS: The clock speed is also not steady (Rising vs falling edge), it's also a pulse. If we say that our CPU has a clock speed of *3 GHz*, then our clock pulses 3 billion times a second. *A pulse IS a Cycle*, that means we have *3 billion cycles per second*, so we can use those to executre more instructions!
 
 #pagebreak()
 == The "Ohm's Law" of the CPU
