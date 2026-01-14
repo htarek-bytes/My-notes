@@ -82,5 +82,25 @@ This is where it gets interesting, the complexity of the code you're gonna write
 *What is the pattern here? for a static environment?* It is the fact that the *environment won't change until you execute an action*
 
 - *Dynamic, less predictable environment*: The environment changes while the agent is thinking. *Dynamic specifically means the world changes independently of you, the agent*. The clock is ticking, the enemies are doing something, the cars are moving, the rain is till pouring down,*whether you do something, or not*.
+- Examples:
+    1. Taxi/Uber driving.
+    2. An FPS game.
+    3. Walking around in real life.
+
+== The gap that bridges static and dynamic: Semidynamic
+
+A environment is called *Semidynamic* when the environment itself is static but has a constraint, factor that is dynamic.
+An easy example to understand this would be a chess game... but with a clock ticking.
+- Why? The pieces don't move on their own, but if you think for too long, you lose (We have a dynamic score performance).
+- *The pattern for Semidynamic*: Everything waits for you to change... but there's a clock ticking.
 
 
+== Discrete vs continuous environment
+
+A *discrete envionment is an environment that has a finite, no matter how large, as long as it is a finite number of states*. That is why a chess game has a discrete environment, generally any board games. Since the set of states $S$ can be counted here, then $S in NN$.
+
+A *continuous environment is one where the number of states it can be in is not defined*, like distances; you can travel 1km or 1.0001 km, right? Mathematically if $S$ represents the number of states then $S in RR$.
+
+*How does this dictate the code's complexity?* $arrow$ Well, for a continuous environment, you cannot write an if else block for each states, they cannot be counted.
+
+== Deterministic vs stochastic (Certainty vs probability)
