@@ -15,13 +15,13 @@
 
 #show: article.with(
   show-header: true,
-  header-titel: "T.H 202 301 89 | Power Architecture",
+  header-titel: "T.H 202 301 89 | M.K.S 202 283 77 ",
   eq-numbering: "(1.1)",
   eq-chapterwise: true,
 )
 
 #maketitle(
-  title: "IFT-2245 | General notes",
+  title: "Titre",
   authors: ("Tarik Hireche : 202 301 89" ,),
   date: datetime.today().display("[day]. [month repr:long] [year]"),
 )
@@ -29,16 +29,7 @@
 #nonum( $ "Rapport écrit par Tarik Hireche" $)
 #set text(size: 11pt)
 
-= Reminder
 
-There are multiple system BUSes on a MOBO where data flows.
-
-RTOS objectives differs from the usual OS -> instructions need to be executed before a set time.
-
-in RTOS -> processes have a deadline, not necessarily as fast as possible, there is this concept of priority and deadline
-
-In general OS's, the OS tries to predict what the CPU will need in advance.
-
-The process doesn't have direct access to external stockage, RAM is its middleman.
-
-CPU and its peripherals can work simulteanously (peripherals have buffers). The CPU moves the data from/to memory to local buffers.
+= Get familiar with C: pointers manipulation, arrays etc, get familiar with how C behaves (statically/dynmically typed, compiled interpreted, where does C live, weakly/strongly typed).
+- Cmake?
+- They recommand CLION with jetbrains but i wanna see if nvim is fine. Install valgrind, get familiar with it
