@@ -83,36 +83,31 @@ So *interruption* is *NOT a software concept*, it is *material, physically imple
 - The snail finally finished its freaking walk. So the snails manager, the disks controler *sends an electrical current that flows through the interrupt wire*.
 4. The lambo's reaction:
 - The CPU receives the electrical signal, some coulombs flowing being pushed by voltage in the wire.
-- Materially,
 
 
 Let's get more into interruptions:
 
-- An interruption causes a transfert of control to the what ever thing calls it , generally through an interruption vector, by vector, we mean a table that has for every routine; its corresponding address, that contains the addresses of the different routine services.
+- An interruption causes a transfer of control from the currently executing program to a specific routine that's *designed to handle that event*.
+- This process is managed using an *interrupt vector table (IVT)*.
 
-An interruption vector can be simply abstracted as a table of 2 columns one with the number of the perppherals and the corresponding code.
+== How the tranfer of control works
 
-An interruption vector can be simply abstracted as a table of 2 columns one with the number of the perppherals and the corresponding code.
+1. *Interruption*: An event occurs (Ex: A timer expires or a keyboard key is pressed), sending a signal to the CPU.
+2. *Context saving*: Before switching tasks, the CPU *saves the current execution state*, typically the program counter and status registers onto a stack so it can come back to it and pop to retrieve the precedent state, allowing it to continue its work on it.
+3. *Vector identification*: The system identifies a unique *interrupt vector*, it's an index or a number that is associated with that specific triggered event.
+4. *Look up and jump*: It then looks at the *IVT*, the interrupt vector table, specifically, it finds the memory address that is associated to the specific *interrupt service routine* that handles that event.
+5. *Execution*: The PC (program counter) is updated with that new adress, and the cpu begins executing the service routine.
+6. *Return*: Once the interrupt service routine is executed and returns, it generally end with an instruction that looks like *IRET* or *RETI* that restores the saved context in the stack, thus returning control to the original program.
 
-An interruption vector can be simply abstracted as a table of 2 columns one with the number of the perppherals and the corresponding code.
+- A key takeaway is that the *whole* OS is guided by interruptions.
 
-An interruption vector can be simply abstracted as a table of 2 columns one with the number of the perppherals and the corresponding code.
-
-An interruption vector can be simply abstracted as a table of 2 columns one with the number of the perppherals and the corresponding code.
-
-An interruption vector can be simply abstracted as a table of 2 columns one with the number of the perppherals and the corresponding code.
-
-An interruption vector can be simply abstracted as a table of 2 columns one with the number of the perppherals and the corresponding code.
-
-An interruption vector can be simply abstracted as a table of 2 columns one with the number of the perppherals and the corresponding code.
-
-An interruption vector can be simply abstracted as a table of 2 columns one with the number of the perppherals and the corresponding code.
-
-- The CPU saves the adress of the interrupted instructions to come back to it after being done with the interrupt.
-- The *whole* OS is guided by interruptions.
-
-- How the CPU deals with interruptions
 - The OS preserves the anterior state before an interruption to come back to it later.
+
+- *Interrupt Vector*: A unique code or number that identifies a specific interrupt handler. In some contexts, it refers to the actual memory address (pointer) of the service routine.
+
+- *Interrupt Vector Table (IVT)*: A data structure—often an array or table of pointers—stored in a reserved block of memory. It maps each interrupt vector to the starting address of its corresponding ISR.
+
+- *Routine/Service Routine (ISR)*: The specialized function that contains the code to process the interrupt.
 
 - *Table of peripherals state*: Contains the type, address and state of each peripherals. So the CPU maintains this table, as we could have simultaneaous interruptions.
 
@@ -121,15 +116,36 @@ An interruption vector can be simply abstracted as a table of 2 columns one with
 
 - One of the OS's objective, is to abstract the material from its user (you don't need to know that your ram is 3200 MHz DDR4 to open google chrome).
 
-- The I/O system has to:
+- *But how does the I/O system handle the peripherals without slowing down the CPU?*
+It uses 3 key mechanisms:
+  1. Buffering:
+    - The problem: the network *sends data by small irregular packets*, but your *HDD wants to write data by big blocks at once*.
+    - The solution: A waiting zone (the buffer). We accumulate the data until it's big enough to satisfy the required size for the HDD to write.
+  2. Caching:
+    - The problem: The HDD is slow. We don't want to read the same thing 50 times when we already read it.
+    - The solution: We *keep a copy of recently used data in RAM* for faster access.
+  3. Spooling:
+    - The concept: It's basically a queue for peripherals that can only do one thing at a time, example: a printer.
+    - Key takeaway: If three persons launch an impression, the OS wont mix up the data of the individual impression requests, it will put them in a *spool* and sends them one by one.
 
-xyz
+The pattern in all of theses techniques: Boosts the CPU's speed by making it less dependant on peripherals.
+
 
 == Storage
-- Disk's surface is divided in pists, where the pists themselves are divided in sectors, cylinders ?
+First of all, let's talk about the physical structure of a disk.
+- *Tracks*: The rings that make the disk, kind of like how onions are made of circles glued together that make a disk if we were to slice it at a specific height $z=k, k in RR$.
+            They are concentric circles on each platter surfacem, kind of like this: (((())))
+- *Sectors*: On the tracks that make the cylinders of a disk, we have *sectors*. They are *the smallest addressable unit of data*.
+- *Cylinders*: a literal physical cylinders composed of superposed concentric rings (the *tracks*), so the *Cylinder \#4 is the track \#4 of the platter \#1 + the track \#4 of the platter \#2 + track \#4 of the platter \#3, etc.* So *the number of the cylinder is the number of the tracks superposed on all of the platters.*
+
 - an arm moves mechanically to the right sector to read/write data.
 
-- When creating a file and putting lots of data, how does the CPU deal with injecting that data when adjacent data around the file itself are unrelated.
+== Storage fragmentation
+- When creating a file and putting lots of data, how does the CPU deal with injecting that data when adjacent data around the file itself are unrelated?
+  - This is where the *file system* intervenes! The file system uses an *allocation table*, allocation of what? *data*! it's like a book's table of contents.
+  - *If the file is too big to stay in one piece, the OS cuts it* and puts in its allocation table *the physical places where the file exists so it can individually find the individual data pieces and construct the file*, Example: "The start of the file is *at sector 10* then the next piece is at *sector 300*, then *sector 561*".
+  - *This is what fragmentation is*. For the CPU, it's transparent because it's abstracted from it, the cpu orders the hdd for data through amulti layered process. *The CPU does not see the fragments of data, but the OS and Disk Controller do*.
+    But from the HDD's POV, it's *painfully slow* to read data, it's arm has to jump from sector 10 to sector 300,etc.
 
 - Let's look into disks algorithms that optimizes time:
 xyz
@@ -148,7 +164,7 @@ fun fact, the majority of computers in the world are running on linux because th
 
 == OS and the services it offers
 
-THe os offers services:
+The OS offers services:
 1. User interface: GUI,batch,command line
 2. Environment of execution for programmes
 3. I/O services
