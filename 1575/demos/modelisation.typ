@@ -127,7 +127,7 @@ We can divide this step depending on the goal of the problem (Maximize $Z$ or mi
 
 Now that we now what variable is our input $x_("in")$, we need to find what resource will break first (as we don't have unlimited resources in the real word, AND we do not allow negative values as we cannot have -5 liters of wine). So we need to find the resource that will get exhausted first.
 
-*How?*, we scan *ALL* of the indepedant variables equations (ligne 1 to m). For each equation that looks like : $"Var"_("dependant") = "Constant" - "Coeff"x_("in")...$
+*How?*, we scan *ALL* of the dependant variables equations (ligne 1 to m). For each equation that looks like : $"Var"_("dependant") = "Constant" - "Coeff"x_("in")...$
       1. *Check the coefficient*:
             - If the coefficient in front of $x_("in")$ is *positive* (ex: $+3x_("in")$) or zero: *IGNORE IT*, why? Because this variable will never limit you, it's positive so it increases as $x_("in")$ increases.
 

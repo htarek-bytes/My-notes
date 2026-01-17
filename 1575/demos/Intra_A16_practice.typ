@@ -72,3 +72,13 @@ We will be swapping the variables between theses two sets until the objective $Z
       - for $x_2$: the smallest coefficient is the one associated to $x_3$ and it is also $-1/2$
 
   - So we need to pick: $"Min"(-1/2 x_3, -1/2 x_4)$. Since both have the same coefficient, either will do. Let's pick $x_3$.
+
+  - Great! Our input variable $x_("in") = x_3$
+
+2. *function B*: ```python Select_output_variable```($x_("in")$); The *ratio test*
+
+Let's remember that our set $A$ constitutes the set of resources! Therefore $x_1$ and $x_2$ are physical, limited resources. We need to find the bound at which they will be exhausted to make sure to not go over it.
+
+- We need to scan *all* of the dependant variables equations (so for the equations fo all elements of set $A$) and compute the ratios for each of them : $"Constant"/"coefficient"$.
+
+
