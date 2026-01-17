@@ -55,30 +55,61 @@ Alright, we have rewritten our equation in a more meaningful way. We can now cle
 
 $A = {x_1, x_2}$, $B = {x_3,x_4}$ 
 
-We will be swapping the variables between theses two sets until the objective $Z$ is optimal.
+Now, the next step is to *clean the objective function*, it is *MANDATORY*. Before starting the algorithm, we must express $Z$ only in terms of independant variables from set $B = {x_3,x_4}$ to avoid wrong reads of the actual costs of resources. So we need to substitute $x_1$ and $x_2$ into $Z$:
 
+Let's rewrite $Z$ in function of theses variables, as they are the real resources used.
+
+so $Z = -[1/2(3 x_3 - x_4 + 1)] - [1/2(x_4 - x_3 + 1)]$
+#pagebreak()
+Let's do some cleaning:
+
+$ Z = -[ 3/2 x_3 - 1/2 x_4 + 1/2] -[-1/2 x_3  + 1/2 x_4 + 1/2] $
+$ Z = -3/2 x_3 + 1/2 x_4 -1/2 + 1/2 x_3 - 1/2 x_4 - 1/2 $
+$ Z = x_3(1/2 - 3/2) + x_4(1/2 - 1/2) - 1/2 - 1/2 $
+$ Z = x_3(-2/2) + x_4(1/2 - 1/2) - 1 = -x_3 -1 $
+
+So the objective function is:
+$ Z = -x_3 - 1$
+
+So in the end, our actions are $x_3 "and" x_4$, and they use resources $x_1,x_2$. 
 #pagebreak()
 == Starting the loop, while(!optimal)
 
+
 1. *function A*: ```python Select_Input_variabe()```;
-  - In this case, it is a minimization problem, therefore we need to minimize $Z$, and to minimize $Z$, we need to select the *independant* variable that builds our *dependant* variables to make them as small as possible as $Z$, the objective function, is in function of the variables in the set $A$.
+  - In this case, it is a minimization problem, therefore we need to minimize $Z$, and to minimize $Z$, *we look at the coefficients in the CLEANED $Z$ equation* $Z = -1 - x_3 + 0x_4$. We need to select the variable with *the most negative coefficient* as it is the one that will have the most impact in lowering the total costs of resources.
 
-  - Okay, let's rewrite our two functions that characterize our dependant variables:
-      - $x_1 = 1/2 + 3/2 x_3 - 1/2 x_4 = 1/2(3 x_3 - x_4 +1)$
-      - $x_2 = 1/2 - 1/2 x_3 + 1/2 x_4 = 1/2(x_4 - x_3 + 1)$
+- Let's look at the coefficients of the independant variables:
+  - for $x_3$ $arrow$ $-x_3$, the coefficient is $-1$
+  - for $x_4$ $arrow$ $0x_4$, the coefficent is zero, no impact at all on the cost.
 
-  - Now, since we have to *minimize* $Z$, let's pick the independant variable that will have the most impact for pulling down $Z$'s value.
-      - for $x_1$: the smallest coefficient is the one associated to $x_4$ and it is $-1/2$.
-      - for $x_2$: the smallest coefficient is the one associated to $x_3$ and it is also $-1/2$
+- The decision is kinda forced here. The variable $x_3$ is the only one that lowers $Z$. 
 
-  - So we need to pick: $"Min"(-1/2 x_3, -1/2 x_4)$. Since both have the same coefficient, either will do. Let's pick $x_3$.
-
-  - Great! Our input variable $x_("in") = x_3$
+- *Therefore the input variable is*: $ x_("in") = x_3 $
 
 2. *function B*: ```python Select_output_variable```($x_("in")$); The *ratio test*
 
 Let's remember that our set $A$ constitutes the set of resources! Therefore $x_1$ and $x_2$ are physical, limited resources. We need to find the bound at which they will be exhausted to make sure to not go over it.
 
 - We need to scan *all* of the dependant variables equations (so for the equations fo all elements of set $A$) and compute the ratios for each of them : $"Constant"/"coefficient"$.
+    - $x_1 = 1/2 + 3/2 x_3 - 1/2 x_4 = 1/2(3 x_3 - x_4 +1)$
+    - $x_2 = 1/2 - 1/2 x_3 + 1/2 x_4 = 1/2(x_4 - x_3 + 1)$
+
+We need to find which physical resources ($x_1 "or" x_2$) will break (hit zero) first as we keep making the same action $x_3$, so as we increase $x_3$. We scan the dependant equations while assuming other independant variables, in this case $x_4$ stay at zero.
+
+- *Analyzing first resource $x_1$* while $x_4 = 0$:
+  - $x_1 = 1/2 + 3/2 x_3$
+  - The coefficient of $x_3$ is $+3/2$, *positive*, therefore *it will never cancel with $1/2$, the constant*.
+  - That means that the resource $x_1$ is not a bottleneck in our problem.
+
+    $ "Ratio" = (1/2)/(3/2) = 1/2 times 2/3 = 1/3 $
+- *Analyzing second resource $x_2$* while $x_4 =0$:
+  - $x_2 = 1/2 - 1/2 x_3$
+  - As we decide to make an action ($x_3$ increases), our resource $x_2$ that $x_3$ uses, decreases. *So there is a limit to $x_3$ on $x_2$*.
+  - $"Ratio" = "Constant"/"Coefficient"$:
+    
+    $ "Ratio" = (1/2)/|(-1/2)| = 1$
 
 
+
+- *Output variable:* 
