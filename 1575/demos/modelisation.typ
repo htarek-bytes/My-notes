@@ -147,6 +147,6 @@ Now that we now what variable is our input $x_("in")$, we need to find what reso
 
                     $arrow$ $"Ratio" = (50 "degrees of margin")/5 "degrees per lap" = 10 "laps"$ before it reaches 50 degrees.
 
-            - It makes change to *choose the minimum ratio* right? Because it is the resource that will get exhausted the earliest, if we choose another value than the minim ratio, well it doesn't matter ; the car will stop on the minimum bottleneck resource. *The smallest ratio represents the weakest link in our system*
+            - It makes sense change to *choose the minimum ratio* right? Because it is the resource that will get exhausted the earliest, if we choose another value than the minimum ratio, well it doesn't matter ; the car will stop on the minimum bottleneck resource. *The smallest ratio represents the weakest link in our system*
 
           - Coming back to our algorithm, if $u$ represents a physical limited resource. And for example, $u = 30 - 5x$, $u$ will be exhausted when $5x = 30$, so the ratio is $30/5=6$. At 6 unity of resource used, the resource will be exhausted. 
