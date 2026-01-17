@@ -151,6 +151,7 @@ Now that we now what variable is our input $x_("in")$, we need to find what reso
 
           - Coming back to our algorithm, if $u$ represents a physical limited resource. And for example, $u = 30 - 5x$, $u$ will be exhausted when $5x = 30$, so the ratio is $30/5=6$. At 6 unity of resource used, the resource will be exhausted. 
 
+#pagebreak()
 3. *Function C:* ```python Pivot_Operation```$(x_("in"), x_("out"))$ 
 
 This is where we *rewrite the system*, it's pure algebra.
@@ -164,3 +165,4 @@ This is where we *rewrite the system*, it's pure algebra.
 
 *Output*: A new system of equation, a clean one.
 *Next Action*: check loop's condition while(!optimal) and iterate if true.
+
