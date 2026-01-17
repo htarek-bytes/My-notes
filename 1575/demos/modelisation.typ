@@ -89,8 +89,8 @@ Why am I reminding this? Well because from theses properties, it means we have t
 
 Our system is *always divided in two sets of variables*;
 
-  1. *dependant variables (the base)*: The ones isolated on the left of the $ space = space $ sign, they generally have a non-zero value.
-  2. *indepedant variables (Outside of the base)*: The ones on the right of the $ space = space$ sign. Their values are always *zero* in the current state.
+  1. *dependant variables (the base)*: The ones isolated on the left of the $space = space $ sign, they generally have a non-zero value.
+  2. *independant variables (Outside of the base)*: The ones on the right of the $ space = space$ sign. Their values are always *zero* in the current state.
 
 *So... what's the goal here?* $space arrow space$: Our goal is two *swap* the variables between theses two sets until the objective that we call, $Z$ is optimal.
 
@@ -150,3 +150,17 @@ Now that we now what variable is our input $x_("in")$, we need to find what reso
             - It makes sense change to *choose the minimum ratio* right? Because it is the resource that will get exhausted the earliest, if we choose another value than the minimum ratio, well it doesn't matter ; the car will stop on the minimum bottleneck resource. *The smallest ratio represents the weakest link in our system*
 
           - Coming back to our algorithm, if $u$ represents a physical limited resource. And for example, $u = 30 - 5x$, $u$ will be exhausted when $5x = 30$, so the ratio is $30/5=6$. At 6 unity of resource used, the resource will be exhausted. 
+
+3. *Function C:* ```python Pivot_Operation```$(x_("in"), x_("out"))$ 
+
+This is where we *rewrite the system*, it's pure algebra.
+
+    1. *Isolate* $x_("in")$: Take the pivot equation (the $x_("out")$'s equation) et reorganize to have $x_("in") = ...$
+        - *Before*: $x_("out") = C - A x_("in") - B x_("other")$
+        - *After*: $x_("in") = C/A - 1/A x_("out") - B/A x_("other")$
+    2. *Global susbtitution* (ctrl f and replace all occurences ): in *ALL* of the other equations (even the objective $Z$ function)
+        - Replace the occurence $x_("in")$ with the new expression that we just computed
+        - Develop and simply the constants and alike variables.
+
+*Output*: A new system of equation, a clean one.
+*Next Action*: check loop's condition while(!optimal) and iterate if true.
