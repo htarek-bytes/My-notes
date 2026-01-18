@@ -1,4 +1,3 @@
-
 #import "@preview/rubber-article:0.3.1": *
 #import "@preview/colorful-boxes:1.4.2": *
 #import "@preview/codly:1.2.0": *
