@@ -104,3 +104,26 @@ A *continuous environment is one where the number of states it can be in is not 
 *How does this dictate the code's complexity?* $arrow$ Well, for a continuous environment, you cannot write an if else block for each states, they cannot be counted.
 
 == Deterministic vs stochastic (Certainty vs probability)
+xyz
+
+#pagebreak()
+Monday Jan. 19
+
+= Types of agent
+
+== Simple refleix Agents
+
+Theses agents ignore percept history, so the actions they make do not like at what data they've seen before:
+  - Quick example: A roomba vacuum cleaner
+
+It's the most simple model. The agent *only acts in function of the actual percept* without taking account of the history.
+
+- *How it works*: It literally uses rules of type 
+  - *Condition* $space arrow space$ *Action*
+    - By using "if [Condition] then [Action]"
+
+- *limit*: it only works correctly if the envionment is *entirely observable*.
+
+== Model-Based reflex agents
+
+*Internal state*: keep track of the unseen world
