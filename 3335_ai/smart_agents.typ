@@ -111,7 +111,7 @@ Monday Jan. 19
 
 = Types of agent
 
-== Simple refleix Agents
+== Simple reflex Agents
 
 Theses agents ignore percept history, so the actions they make do not like at what data they've seen before:
   - Quick example: A roomba vacuum cleaner
@@ -124,6 +124,61 @@ It's the most simple model. The agent *only acts in function of the actual perce
 
 - *limit*: it only works correctly if the envionment is *entirely observable*.
 
+The summary about this type of agent is basically:
+  - It *has no internal state*, it doesn't know *the past*, *the actions he did are not accessible*.
+
+
 == Model-Based reflex agents
 
-*Internal state*: keep track of the unseen world
+*Internal state*: keep track of the unseen world, so it has a memory.
+Very useful for partially observable envionment. It is more evolved than a simple reflex agent.
+  - *Is it a memory?*: Yep totally, its a mix of a history that it has access to and *a prediction*.
+  - An analogy would be; You're driving your car and you look at the rearview mirrors and you notice a red car.     You look in front of you, the red car disappeared. What can you infer? *Your internal states says "There is still a red car behind me."*
+  - *You maintain a model of the world that persists EVEN if you don't have direct perception of it*
+
+== Goal-Based Agent: The GPS (A planifier)
+
+The internal state *is not enough*, we add a *destination (the goal)*. The agent doesn't just react to percepts anymore, *it anticipates* -> "If I turn left, will my destination be shorter?"
+
+A good example of AI, is a chess AI. *It has an internal state (the chess board) BUT its decision are dictated by a SINGLE goal: TO WIN*. It simulates sequences "If I go to e4 then the opponent might play d5" to satisfy his goal.
+
+
+== Utility-Based agent: The optimizer
+
+In here, we add another layer of nuance. We call it the *Utility score*. 
+
+Remember that *the goal is binary*, either you reached it or you didn't. 
+But the *utility* is a *continous ladder*. It searchs the next state to choose based on this *utility score*, the state associated with the best found score will be chosen. Kind of like a *happinness score*.
+
+== Learning agent: the student (auto-evolution)
+
+This is the model that can modify its own code, its own rules, as long as it satifies it.
+It is *almost* like a student.
+
+When we say that it modifies its own code. It's not necessarily rewriting its own .py files, no. il modifies *its decisional logic*, the *weight of a neuronal networks, the input of table of transition or its priority rules*. 
+
+The mechanism is as follows:
+  - For an agent to learn by itself without you having to code each scenario, *we divide its brain into 4 interconnected sub-systems*:
+    1. The critic: It holds the standard of performance (The *P* in *PEAS*). The agent *does not modify its rules randomly*; it modifies them *so the critic function stops sending it negative feedbakc*.
+    2. The learning element: *This is the real modifier*. It receives the feedback of the critic function and identifies which part of the logic has to change to *do better next time*.
+    3. The problem generator: *This is the smartest part of its brain.* Instead of giving it a problem it already knows, it *suggests explorative actions*, sometimes sub-optimal in the short term, to discover new information on the envirnment.
+
+
+*But how does it actually modify?* It doesn't know it, we give it an algorithm that i can use do proceed into doing theses modifications
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
