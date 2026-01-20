@@ -48,7 +48,7 @@ An OS can have many types of interfaces, for example:
 == GUI: Less powerful, more friendly
 
 - We have windows, icons that represent files, directories, programs, actions, etc.
-- Example of GUI on linux : KDE, GNOME, Cinnamon, etc. (mine is GNOME on fedora)
+- Example of GUI on linux : KDE, GNOME, Cinnamon, etc. (mine is Hyprland on fedora)
 
 - We can have other types of GUIs, such as touch screen GUIs
 
@@ -92,18 +92,27 @@ An OS can have many types of interfaces, for example:
 - Eample \#1: "Hello World"
   - "printf("Greentings)" (in user mode), printf is part of the standard C library, the standard C library makes a system call, switches in kernel mode by changing the mode bit, executes the abstracted lines of codes associated to displaying stuff on the screen and comes back to user mode by changing the bit mode again.
 
-== Systems programs
+== The OS Toolkit (User Space); Systems programs
 
 - The system programs are programs that come with the OS, they provide an environement practical for the development and execution of programs.
 
+- Background services : in linux they're called *daemons*, they are programs that are running without any interaction with the user, some run until you turn off the computer, while others, only for a period of time.
+
+- They are execute in user mode, *not kernel*, we just don't see them running.
+
+- System utilities
 - *IMPORTANT NUANCE*: is chmod a system call or a system program? -> *it is a system program but it USES a system call*
   - The difference lies here: *if you can type it in a terminal and it runs: it's a PROGRAM*
   - *A system call is a kernel entry point (low-level, privildged), accessed through an API*
 
-=== System program
   - Runs in *User mode*, *Lives as an executable* (in a path, example : /bin/chmod,/bin/ls, etc.).
   - Can be launched from the shell
   - *Has no direct power*
   - *Uses libraries (libc)*
 
-- General information: We're going to start with process, threads, synchronization, ordonancement (schedulling), interblocages.
+- General information: We're going to start with process, threads, synchronization, ordonnancement (schedulling), interblocages (deadlocks).
+
+
+Libraries act as the Protocol Translator between the User Space and the Kernel. When you call a function in C to interact with peripherals (like moving a mouse or printing text), you aren't actually 'flipping' the access bit yourself—that would be a security breach
+
+Instead, the Standard Library packages your request into a Data Frame (placing specific values into CPU registers) and executes a SYSCALL instruction. This instruction acts as a Hardware Trapdoor: it forces the CPU to pause your code, switch the 'Privilege Bit' from 1 (User) to 0 (Kernel), and jump to a protected entry point in the OS. The Kernel then uses its direct hardware hooks to execute your command before 'downgrading' the CPU back to User Mode to resume your programm.
