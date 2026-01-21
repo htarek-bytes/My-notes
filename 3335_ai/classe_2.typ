@@ -38,7 +38,7 @@
 - They use atomical representations: World's states are considered as wholes. 
 
 
-== Informed algorithms vs non informed lgorithmes
+== Informed algorithms vs non informed algorithmes
 
 - Example:
   - You're on a trip to relax in romania.
@@ -83,7 +83,8 @@
 == Graph state space (cannot always be constructed fully, it can be super big)
 
   - The state space graph is just a mathematical representaio nof the entire problem, *where each state appears ONLY once*. it includes all possible configuration and transitions, effectively serving as a map of the entire system.
-  - But the search tree is an exploration of the state space *starting from an initual state*. Unlike the graph, *STATES CAN APPEAR MULTIPLE TIMES in a search tree*. Each node in the tree represents a specific *path* from the start state, rather than just the state itself.
+=== How does a seach tree relate to the graph state space?
+  - But the search tree is an exploration of the state space *starting from an initial state*. Unlike the graph, *STATES CAN APPEAR MULTIPLE TIMES in a search tree*. Each node in the tree represents a specific *path* from the start state, rather than just the state itself.
 
   - Each node of the serach tree  corresponds to a *WHOLE COMPLETE PATH* in the graph of the states space.
   - We build both in demand but we try to minimize constructing it as much as possible.
@@ -154,4 +155,29 @@ Now lets continue with the *node*: fundamentally, abstracting any details, from 
 
 = The Search motor (General tree search)
 
-All *non informed research algorithms xyz*
+All *non informed research algorithms work the same way*. The only thing that changes is 
+  - *The data structure for the Fringe*: The fringe, also called frontier or border is the waiting queue for work. It's the set of all nodes that the agent discovered but did *not explore them yet*.
+    - It works that way: 
+      1. The search algorithm choose a node from the fringe 
+      2. Verifies if its the goal (goal test)
+      3. Expands: Looks at its neighbours and adds them all to the fringe
+      4. *Restart from 1*, the first *node* added to the fringe is the *initial state*
+
+Basically, if we make a research in a tree or a graph: then the set of *all nodes at the end of the visited paths are called the FRINGE*
+  - Implented like a queue: INSERT(node,FRINGE), REMOVE(NODE)
+
+Depending on how we explore the graph:
+
+- BFS: uses a *FIFO* queue. Explores layer by layer. It is complete or optimal if all costs are equal to 1.
+- DFS: uses a *LIFO* stack. it goes as deep as it can in a tree branch before coming back (backtracking). Its big advtange is the *linear memory space* $O(b m)$ but it isn't optimal.
+
+- UCS: Use a priotity queue *based on the cumulated costs $g(n)$*. It's logically equivalent to the *Djisktra algorithm*. It is optimal no matter the costs of the actions.
+
+I have to be able to answer theses questions to master the concept:
+
+1. *Completeness*: Will it always find the solution ? the number of nodes must be finite. 
+2. *Optimality*: Will it find the *best* solution?
+3. *Temportal complexity*: How may nodes are generated?
+4. Space complexity: How many nodes are stored in memory
+
+
