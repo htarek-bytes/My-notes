@@ -2,7 +2,7 @@
 #import "@preview/colorful-boxes:1.4.2": *
 #import "@preview/codly:1.2.0": *
 #import "@preview/codly-languages:0.1.1": *
-
+#import "@preview/tablem:0.3.0": tablem, three-line-table 
 // Initialisation de Codly
 #show: codly-init.with()
 
