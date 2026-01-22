@@ -36,11 +36,11 @@ ex: we call main() -> we push that on the stack, we execute it and meet return? 
 - Global data: Before the main , we can create constants and variables.
 A process can be in multiple states:
   1. ready (first state that every process is in when launched *not executed yet*): Everything needed has been loaded in RAM
-  2. When the scheduler tells it "It's your turn bruv", it gets executed we called it "the chosen one, l'elu".
-  3. If while it is executing, it asks for data and waits for it, the scheduler removes it from CPU and puts it in *waiting status*
+  2. *executing*: When the scheduler tells it "It's your turn bruv", it gets executed we called it "the chosen one, l'elu".
+  3. *waiting*: If while it is executing, it asks for data and waits for it, the scheduler removes it from CPU and puts it in *waiting status*
     - When the data arrives, it comes back to *ready*
     - pre emptive scheduler vs non pre emptive (xyzz)??
-  4. Terminated: pretty obvious
+  4. *Terminated*: pretty obvious
 
 A process never gets executed more than 3-10 ms, the CPU's frequency is insanely fast and can do a lot in such such time. It cycles to the *ready state* and *waiting*
 
