@@ -130,3 +130,5 @@ We need that heuristic to keep our "big spider web" of search logic intact, we h
 If our heuristic is optimisitic, ($h<=h*$), it acts as a lower bound. 
 
 Remember than in our AI agents context : *Optimism (admimissibility) = Completeness + Optmimality*. 
+
+Btw, in our A\* algorithm as $h(n) space arrow space 0 $, our algorithm will resemble more and more the UCS algorithm.
