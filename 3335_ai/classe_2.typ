@@ -82,7 +82,7 @@
 
 == Graph state space (cannot always be constructed fully, it can be super big)
 
-  - The state space graph is just a mathematical representaio nof the entire problem, *where each state appears ONLY once*. it includes all possible configuration and transitions, effectively serving as a map of the entire system.
+  - The state space graph is just a mathematical representation of the entire problem, *where each state appears ONLY once*. it includes all possible configuration and transitions, effectively serving as a map of the entire system.
 === How does a seach tree relate to the graph state space?
   - But the search tree is an exploration of the state space *starting from an initial state*. Unlike the graph, *STATES CAN APPEAR MULTIPLE TIMES in a search tree*. Each node in the tree represents a specific *path* from the start state, rather than just the state itself.
 
@@ -175,8 +175,8 @@ Depending on how we explore the graph:
 
 I have to be able to answer theses questions to master the concept:
 
-1. *Completeness*: Will it always find the solution ? the number of nodes must be finite. 
-2. *Optimality*: Will it find the *best* solution?
+1. *Completeness*: Will it always find the solution ? the number of nodes must be finite. m can be infinite, so only if we avoid cycles 
+2. *Optimality*: Will it find the *best* solution? For DFS: no, it finds the left-most solution
 3. *Temportal complexity*: How may nodes are generated?
 4. Space complexity: How many nodes are stored in memory
 
