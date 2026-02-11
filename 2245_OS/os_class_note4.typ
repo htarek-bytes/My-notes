@@ -144,7 +144,7 @@ sprintf(sharedMemoryPtr, "Writing what ever we want");
   - less overhead bc we dont need to copy in the kernel memory space to transmit message.
 == Direct communication between processes
 Can be unidirectional (only one can write and read, other just reads) or bidrectional.
-- Normal tubes vs named tubes, we can also do it physically by implementation a physical wire 
+- Normal pipes vs named pipes, we can also do it physically by implementation a physical wire 
 
 == Indirect communication: the process's mail boxes 
 
@@ -154,8 +154,39 @@ Same concept as mail boxes, each process has a mailbox that we can send data int
 
 Messages transmission can either be blocking or non blocking, is the sender blocked until the receiver reads the message?
 
-The blockage is considered as *synchrone*:
+The blockage is considered as *synchrone*
 
 
 *Non blockage * is considered as *asyncronous* 
+
 == is a link unidirectional or bidirectional
+
+
+== Named pipe vs ordinary non named tbues
+
+Named pipe are FIFO files, they are bidirectional (opposing non named pipe).
+
+- Ordinary pipes need a parent-child relationship, for the child to have the descriptors stored in the table. 
+- no fork needed here, as the file is created on the HDD, the processes can write in it and read too.
+  - can be created with mkfifo TubeName. It's literally a file. We can also code it in C. We literally use the C function "mkfifo()"
+
+
+== Remote Procedure Calls
+
+- Basically calling a function that will run on another computer, the call, along with its arguments etc, will be transported across the network.
+  1. The client call the Procedure
+  2. Stub builds message to send across network
+  3. unpacks it when received by the other computer
+  4. executes and sends back return value.
+
+
+== Summary on IPC (interprocess communication)
+
+- Each process is a program in execution
+- Each process has a state
+- Each process is represented by its process control bloc (PCB)
+- The OS *chooses* which process to put in the "ready queue" (long term scheduling) and which process in the ready queue will be executed by the CPU (one layer inside now...and it is called; short term scheduling) 
+
+- POSIX functions that control the creation are fork(), wait(), and exec\*().
+
+- Processes *can communicate with each others* with shared memory or message transmissions using named pipes. We can also use sockets or RPC.
