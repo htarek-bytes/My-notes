@@ -78,6 +78,7 @@ v- An independant process cannot affect or be affected by the execution of anoth
 
 == How do we link them?
 a) We transmit *messages* through the kernel, the message will necessarily pass through the kernel memory (can generate unnecessary overhead)
+
 b) Shared memory: A shared memory between processes A and B which they can both access (has to be setup by the user but is generally more efffective)
 == Can a link be associated to more than one process
 - The productor-consummer problem: *one sends, one receives*
@@ -97,6 +98,7 @@ int in = 0;
 int out = 0;
 ```
 
+#pagebreak()
 - The writer, producter's code to write messages:
 
 ```C 
@@ -127,10 +129,11 @@ while (true) {
 - *Combien de items peut etre dans le buffer*? A: BUFFER_SIZE - 1, c'est juste l'algorithme
 - *Access simultane? - Beaucoup d'issue de synchronisation?*
 
+#pagebreak()
 == Create the shared memory space: POSIX Shared memory
 We use shm_open (sharedMemoryOpen): take 3 parameters:
-  1. A name for the shared memory space that the process need to access it 
-  2. Il le creer s'il n'existe pas et donne permission de read write.
+  1. A name for the shared memory space that the process *needs* to access the space.
+  2. It creates the space if it doesn't exist and gives it READ/WRITE permission.
   
 we use ftruncate (shared_memory variable, sizeInBytes)
 
@@ -142,6 +145,17 @@ sprintf(sharedMemoryPtr, "Writing what ever we want");
 - *Advantages of using shared memory*:
   -  Less overhead (surcharge) as the kernel is not solicited, it is limited to the configuration of shared memory's region
   - less overhead bc we dont need to copy in the kernel memory space to transmit message.
+
+
+- *What is a handle?* : The ticket is the handle!
+
+  - We can think of it as a receipt number, just like the one you'd get if you buy something at a store. Now, in this case, a handle is given to a program when the program asks for a resource (for example -? Creating a new thread)
+
+The OS creates the thread inside the vault, locks it up, and hands your program a ticket with a number on it , like \#32.
+
+How does the OS, more precisely the kernel, deals with this?
+  1. *The process table:* Our program (process) has a private lookup table in the kernel
+  2. *The index:*
 == Direct communication between processes
 Can be unidirectional (only one can write and read, other just reads) or bidrectional.
 - Normal pipes vs named pipes, we can also do it physically by implementation a physical wire 
@@ -158,11 +172,12 @@ The blockage is considered as *synchrone*
 
 
 *Non blockage * is considered as *asyncronous* 
+#pagebreak()
 
 == is a link unidirectional or bidirectional
 
 
-== Named pipe vs ordinary non named tbues
+== Named pipe vs ordinary non named tubes 
 
 Named pipe are FIFO files, they are bidirectional (opposing non named pipe).
 
@@ -190,3 +205,72 @@ Named pipe are FIFO files, they are bidirectional (opposing non named pipe).
 - POSIX functions that control the creation are fork(), wait(), and exec\*().
 
 - Processes *can communicate with each others* with shared memory or message transmissions using named pipes. We can also use sockets or RPC.
+      
+
+= So what the heck is the difference between a shared memory space and a pipe?
+
+*Named Pipes (FIFOS)* and *Shared Memory* both use the filesystem as a kind of "meeting point" (The name/path). *They both look like files, but they behave completely differently*.
+
+
+== The core difference: Space vs. Time
+
+Yep. Space vs. Time, anchor this in your head. Let's dig into it:
+
+1. *Shared Memory (SHM)* is *Spatial*
+
+  - *Analogy:* Your paper notebook in your backpack. You write whatever you want on it and 10 minutes later, it will still be there. You can erase it, overwrite any character you want, read it 1000 times, its a storage space.
+  - *The cost:* It's freaking messy. If *two people write at the exact same time, you get gibberish!.* You need a lock (semaphore) to manage it.
+
+
+2. *Pipes (tubes* are *Temporal (flow)*
+  - *Analaogy:* A water Hose. Your pour water (data) into one end. It travels through and comes out the other.
+  - *Crucial Constraint:* Once the water comes out (the data arrives), it's gone from the hose (pipe). *You cannot "re-read" a byte from a pipe*. You cannot "seek" (rewind) the hose. It is *strictly First-In, First-Out (FIFO)*.
+  - *The benefit:* It is self-cleaning and self-synchronizing. You don't need locks as the OS ensuire the data flows smoothly.
+
+
+== Ordinary vs Named Pipes
+
+1. Ordinary Pipe : ```C pipe()```
+  - *Visibility:* *Inivisible*. It has no name. It exists only in the kernel's memory.
+  - *Relationship:* *Family only*. The pipe can only be used between a parent and a child process, created via a ```C fork()```.
+  - *Lifespan:* *Dies automatically when the processes die.*
+
+
+1. Named Pipe: ```C mkfifo```
+  - *Visibility:* *Visible*. It appears asa file in our directory.
+  - *Relationship:* *Public.* Any unrelated program can open it if they know the path.
+
+  - *Lifespan:* Well it's a *public mailbox*, so it persists on the disk until we explicitely delete it unsing unlink.
+
+== Directionality
+
+*Named Pipes (FIFOs) are strictly unidrectional on Linux/Unix.*
+
+If we open a named pipe, we must decide: "Am I the *Reader* or the *Writer*?". We generally cannot be both on the same pipe.
+
+Both *Standard pipes* (anonymous) and *Named Pipes* (FIFOS) work exactly the same way regarding direction.
+
+- *Standard Pipe:* Data goes in fd[1] (Write end) -> Data comes out fd[0] (Read end).
+- *Named pipe:* Process A opens fifo as O_WRONLY -> Process B opens fifo as O_RDONLY.
+
+- *But... Why?*
+  We can think of this like a water slide right? Water, the data, flows down. If you try to climb back up (write back) on the same slide while the water is coming down, you slide (crash).
+  There is no "separation" of traffic inside a single pipe. It is just a stream of bytes, *kind of like UART (Serial connection)*.
+
+Just like *UART*, a Pipe is a *Byte Stream*, not *message stream* (symbols flowing).
+
+Just like *UART*, we need a *Protocol*, because we don't know how to read the data. We cannot just read, we might partially read data and get corrupted information! 
+
+We need delimiters like \n or a null terminator like \0 or a length header (sending the size first). Exactly like we'd do on an arduino or an stm32.
+
+- *The "Bidirectional" Illusion*
+
+We might see code where a process opens a named pipe with O_RDWR (Read/Write).
+
+*DO NOT DO THIS!* It's a mf trap haha! 
+
+If you write "hello" into a pipe and the ntry to read from that #emph([same]) pipe, you will likely read your *own "Hello" back!* *You are talking to yourself*
+
+- So... *How do we actual get bidirectional communication*? (The standard way)
+
+
