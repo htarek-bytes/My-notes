@@ -35,9 +35,12 @@ Each function call we add the function call on the stack;
 ex: we call main() -> we push that on the stack, we execute it and meet return? We pop main back.
 - Global data: Before the main , we can create constants and variables.
 A process can be in multiple states:
-  1. ready (first state that every process is in when launched *not executed yet*): Everything needed has been loaded in RAM
-  2. *executing*: When the scheduler tells it "It's your turn bruv", it gets executed we called it "the chosen one, l'elu".
-  3. *waiting*: If while it is executing, it asks for data and waits for it, the scheduler removes it from CPU and puts it in *waiting status*
+  1. *new*: The OS creates PCB, assigns PID. The process is initiated but is not yet ready to be executed.j
+    - before switching entering the ready queue, the process has to be fully initialized (Allocating memory for code, loading code, process's PCB is updated to reflect its new state).
+    - Once loaded, the process is physically placed into the Ready Queue ( a linked list of PCBs).
+  2. ready (first state that every process is in when launched *not executed yet*): Everything needed has been loaded in RAM
+  3. *executing*: When the scheduler tells it "It's your turn bruv", it gets executed we called it "the chosen one, l'elu".
+  4. *waiting*: If while it is executing, it asks for data and waits for it, the scheduler removes it from CPU and puts it in *waiting status*
     - When the data arrives, it comes back to *ready*
     - pre emptive scheduler vs non pre emptive (xyzz)??
   4. *Terminated*: pretty obvious

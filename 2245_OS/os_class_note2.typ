@@ -54,7 +54,7 @@ An OS can have many types of interfaces, for example:
 
 == System calls interface
 
-- It's an interface of programmation for the services provided by the others
+- It's an interface of programmation for the services provided y the os
 - Generally accessible through an API, few examples : Win32 API for Windows, POSIX API for systems that are POSIX_based, including all versions of UNIX,Linux and Mac OS X
   - We also have Java API for the Java virtual machine (JVM), created everytime we launch a java program.
 
